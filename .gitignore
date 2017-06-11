@@ -1,0 +1,24 @@
+# Editor backup files
+*~
+
+# History files
+.Rhistory
+*.Rapp.history
+
+# Example code in package build process
+*-Ex.R
+
+# R data files from past sessions
+.Rdata
+.Rproj.user
+
+# R-studio files
+goftest.Rproj
+
+# covr files
+src/*.gcov
+src/*.gcda
+src/*.gcno
+
+# .o files
+src/*o
