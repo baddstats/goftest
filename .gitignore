@@ -2,7 +2,9 @@
 *~
 
 # version control files
-RCS/*
+*/RCS/*
+*/oldRCS/*
+*,v
 
 # History files
 .Rhistory
