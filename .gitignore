@@ -1,6 +1,9 @@
 # Editor backup files
 *~
 
+# version control files
+RCS/*
+
 # History files
 .Rhistory
 *.Rapp.history
