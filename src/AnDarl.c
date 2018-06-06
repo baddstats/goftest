@@ -1,7 +1,7 @@
 /* 
    AnDarl.c
 
-   $Revision: 1.1 $  $Date: 2014/06/09 07:53:21 $
+   $Revision: 1.2 $  $Date: 2018/03/29 08:07:08 $
 
    Original C code by G. and J. Marsaglia
 
@@ -154,7 +154,8 @@ void ADprobApproxInf(double *a, int *na, double *prob) {
 }
   
 void ADtestR(double *x, int *n, double *adstat, double *pvalue) {
-  double N, a, p;
+  double a, p;
+  int N;
   N = *n;
   a = ADstat(N, x);
   p = AD(N, a);
