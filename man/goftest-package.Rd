@@ -31,6 +31,13 @@
   is computed by \code{\link{pAD}}
   using the algorithm of Marsaglia and Marsaglia (2004).
   The quantiles are computed by \code{\link{qAD}} by root-finding.
+
+  By default, each test assumes that the parameters of the null
+  distribution are known (a \emph{simple} null hypothesis).
+  If the parameters were estimated (calculated from the data)
+  then the user should set \code{estimated=TRUE} which uses
+  the method of Braun (1980) to adjust for the effect of 
+  estimating the parameters from the data. 
 }
 \author{
   Adrian Baddeley, Julian Faraway, John Marsaglia, George Marsaglia.
@@ -38,6 +45,11 @@
   Maintainer: Adrian Baddeley <adrian.baddeley@uwa.edu.au>
 }
 \references{
+  Braun, H. (1980)
+  A simple method for testing goodness-of-fit in the presence of
+  nuisance parameters.
+  \emph{Journal of the Royal Statistical Society} \bold{42}, 53--63.
+
   \ifelse{latex}{\out{Cs\"org\H{o}}}{Csorgo}, S. and Faraway, J.J. (1996)
   The exact and asymptotic distributions of
   \ifelse{latex}{\out{Cram\'er}}{Cramer}-von Mises statistics.
@@ -56,7 +68,13 @@
   \code{\link[stats]{ks.test}}
 }
 \examples{
-  x <- rnorm(10, mean=2, sd=1)
+  x <- rnorm(30, mean=2, sd=1)
+  # default behaviour: parameters fixed: simple null hypothesis
   cvm.test(x, "pnorm", mean=2, sd=1)
   ad.test(x, "pnorm", mean=2, sd=1)
+  # parameters estimated: composite null hypothesis
+  mu <- mean(x)
+  sigma <- sd(x)
+  cvm.test(x, "pnorm", mean=mu, sd=sigma, estimated=TRUE)
+  ad.test(x, "pnorm", mean=mu, sd=sigma, estimated=TRUE)
 }

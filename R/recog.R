@@ -4,9 +4,9 @@
 ##
 
 recogniseCdf <- function(s="punif") {
-  if(!is.character(s) || length(s) != 1) return(NULL)
-  if(nchar(s) <= 1 || substr(s,1,1) != "p") return(NULL)
-  root <- substr(s, 2, nchar(s))
+  if(!is.character(s) || length(s) != 1 || nchar(s) == 0) return(NULL)
+  #' strip off the leading 'p' if present
+  root <- if(substr(s,1,1) == "p") substr(s, 2, nchar(s)) else s
   a <- switch(root,
               beta     = "beta",
               binom    = "binomial",
@@ -40,4 +40,30 @@ recogniseCdf <- function(s="punif") {
   return(NULL)
 }
 
-         
+#' not exported
+
+getfunky <- function(fname) {
+  a <- mget(fname, mode="function", ifnotfound=list(NULL), inherits=TRUE)[[1]]
+  return(a)
+}
+
+getCdf <- function(s="punif", fatal=TRUE) {
+  sname <- deparse(substitute(s), nlines=1L)
+  if(is.function(s)) return(s)
+  if(is.character(s) && length(s) == 1 && nchar(s) > 0) {
+    #' first try adding a leading 'p' (to catch the case s="t")
+    if(substr(s,1,1) != "p") {
+      f <- getfunky(paste0("p", s))
+      if(is.function(f))
+        return(f)
+    }
+    f <- getfunky(s)
+    if(is.function(f))
+      return(f)
+  }
+  if(fatal)
+    stop(paste("Argument", sQuote(sname),
+               "should be a function, or the name of a function"),
+         call.=FALSE)
+  return(NULL)
+}
