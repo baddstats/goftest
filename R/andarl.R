@@ -22,25 +22,26 @@ ad.test <- function(x, null="punif", ..., estimated=FALSE, nullname) {
   U <- F0(x, ...)
   if(any(U < 0 | U > 1))
     stop("null distribution function returned values outside [0,1]")
+  
+  #' perform test
   if(!estimated || n <= 4) {
     #' simple null hypothesis
-    z <- do.goftest.AD(U)
-    PVAL <- z$pvalue
-    STATISTIC <- z$adstat
-    names(STATISTIC) <- "An"
-  } else {
+    z <- simpleADtest(U)
+    ADJUST <- NULL
+  } else {  
     #' composite - use Braun (1980)
-    first <- sample(n, ceiling(n/2), replace=TRUE)
-    z1 <- do.goftest.AD(U[first])
-    z2 <- do.goftest.AD(U[-first])
-    STATISTIC <- max(z1$adstat, z2$adstat)
-    names(STATISTIC) <- "AnMax"
-    PVAL <- 1 - (1 - min(z1$pvalue, z2$pvalue))^2
+    m <- round(sqrt(n))
+    z <- braun(U, simpleADtest, m=m)
+    ADJUST <- paste("Braun's adjustment using", m, "groups")
   }
+  PVAL             <- z$pvalue
+  STATISTIC        <- z$statistic
+  names(STATISTIC) <- z$statname
+  
+  #' dress up
   METHOD <- c("Anderson-Darling test of goodness-of-fit",
-              if(estimated) "(with Braun's adjustment)" else NULL,
+              ADJUST,
               paste("Null hypothesis:", nullname))
-
   extras <- list(...)
   parnames <- intersect(names(extras), names(formals(F0)))
   if(length(parnames) > 0) {
@@ -67,8 +68,7 @@ ad.test <- function(x, null="punif", ..., estimated=FALSE, nullname) {
   return(out)
 }
 
-
-do.goftest.AD <- function(U) {
+simpleADtest <- function(U) {
   ## Internal: call Marsaglia C code
   U <- sort(U)
   n <- length(U)
@@ -79,7 +79,7 @@ do.goftest.AD <- function(U) {
           pvalue = as.double(numeric(1)),
 	  PACKAGE="goftest"
           )
-  return(list(adstat=z$adstat, pvalue=z$pvalue))
+  return(list(statistic=z$adstat, pvalue=z$pvalue, statname="An"))
 }
 
 pAD <- function(q, n=Inf, lower.tail=TRUE, fast=TRUE) {

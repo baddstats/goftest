@@ -22,23 +22,25 @@ cvm.test <- function(x, null="punif", ..., estimated=FALSE, nullname) {
   n <- length(U)
   if(any(U < 0 | U > 1))
     stop("null distribution function returned values outside [0,1]")
+
+  #' perform test
   if(!estimated || n <= 4) {
     #' simple null hypothesis
-    z <- do.goftest.CvM(U)
-    PVAL <- z$pvalue
-    STATISTIC <- z$omega2
-    names(STATISTIC) <- "omega2"
+    z <- simpleCvMtest(U)
+    ADJUST <- NULL
   } else {
     #' composite - use Braun (1980)
-    first <- sample(n, ceiling(n/2), replace=TRUE)
-    z1 <- do.goftest.CvM(U[first])
-    z2 <- do.goftest.CvM(U[-first])
-    PVAL <- 1 - (1 - min(z1$pvalue, z2$pvalue))^2
-    STATISTIC <- max(z1$omega2, z2$omega2)
-    names(STATISTIC) <- "omega2max"
+    m <- round(sqrt(n))
+    z <- braun(U, simpleCvMtest, m=m)
+    ADJUST <- paste("Braun's adjustment using", m, "groups")
   }
+  PVAL             <- z$pvalue
+  STATISTIC        <- z$statistic
+  names(STATISTIC) <- z$statname
+
+  #' dress up
   METHOD <- c("Cramer-von Mises test of goodness-of-fit",
-              if(estimated) "(with Braun's adjustment)" else NULL,
+              ADJUST,
               paste("Null hypothesis:", nullname))
 
   extras <- list(...)
@@ -69,11 +71,11 @@ cvm.test <- function(x, null="punif", ..., estimated=FALSE, nullname) {
 
 #' not exported
 
-do.goftest.CvM <- function(U) {
+simpleCvMtest <- function(U) {
   U <- sort(U)
   n <- length(U)
   k <- seq_len(n)
   omega2 <- 1/(12 * n) + sum((U - (2*k - 1)/(2*n))^2)
   pvalue <- pCvM(omega2, n=n, lower.tail=FALSE)
-  return(list(omega2=omega2, pvalue=pvalue))
+  return(list(statistic=omega2, pvalue=pvalue, statname="omega2"))
 }
