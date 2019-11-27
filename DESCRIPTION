@@ -1,8 +1,8 @@
 Package: goftest
 Type: Package
 Title: Classical Goodness-of-Fit Tests for Univariate Distributions
-Version: 1.2-1
-Date: 2018-06-07
+Version: 1.2-2
+Date: 2019-11-27
 Authors@R: c(person("Julian", "Faraway", role = "aut"),
 	     person("George", "Marsaglia", role = "aut"),
 	     person("John",   "Marsaglia", role = "aut"),
