@@ -2,6 +2,7 @@
 #' check monotonicity, etc
 #'
 
+library(goftest)
 xx1 <- seq(0,20, length=1024)
 xx2 <- seq(20, 100, by=0.1)
 x <- c(xx1, xx2[-1])
