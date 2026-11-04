@@ -1,3 +1,4 @@
+library(goftest)
 # Argument validation for ad.test
 # It throws error if 'x' is not the expected type
 observed_error <- NULL

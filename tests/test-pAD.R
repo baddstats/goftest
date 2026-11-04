@@ -1,3 +1,4 @@
+library(goftest)
 # pAD warns when input cannot be parsed as numeric
 options(warn = 2) # turn warning into error
 observed_warning <- NULL

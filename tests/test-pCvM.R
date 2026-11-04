@@ -1,3 +1,4 @@
+library(goftest)
 # tests for CvM provability and quantile functions
 # returns a valid qCvM quantile"
 q <- qCvM(0.9)
