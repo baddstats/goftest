@@ -16,7 +16,4 @@ Description: Cramer-Von Mises and Anderson-Darling tests of goodness-of-fit
 URL: https://github.com/baddstats/goftest
 BugReports: https://github.com/baddstats/goftest/issues
 License: GPL (>=2)
-Suggests: 
-    testthat (>= 3.0.0),
-    withr
 Config/testthat/edition: 3
