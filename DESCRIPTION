@@ -1,8 +1,8 @@
 Package: goftest
 Type: Package
 Title: Classical Goodness-of-Fit Tests for Univariate Distributions
-Version: 1.2-2
-Date: 2019-11-27
+Version: 1.2-4
+Date: 2026-06-09
 Authors@R: c(person("Julian", "Faraway", role = "aut"),
 	     person("George", "Marsaglia", role = "aut"),
 	     person("John",   "Marsaglia", role = "aut"),
@@ -16,3 +16,4 @@ Description: Cramer-Von Mises and Anderson-Darling tests of goodness-of-fit
 URL: https://github.com/baddstats/goftest
 BugReports: https://github.com/baddstats/goftest/issues
 License: GPL (>=2)
+Config/testthat/edition: 3
